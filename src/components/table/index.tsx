@@ -1,7 +1,5 @@
-import type { Row as TRow, Table as TTable } from '@tanstack/react-table';
 import {
   ColumnFiltersState,
-  createColumnHelper,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -10,11 +8,10 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
-import { ArrowUpDown } from 'lucide-react';
 import { useState } from 'react';
 
+import { columns } from '@/components/table/columns';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import {
   Table,
@@ -25,26 +22,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import DATA from '@/data';
-
-interface Status {
-  id: number;
-  name: string;
-}
-
-interface ColumnDataProps {
-  task: string;
-  status: Status;
-  due?: Date | null;
-  notes: string;
-}
-
-interface TableProps {
-  table: TTable<ColumnDataProps>;
-}
-
-interface RowProps {
-  row: TRow<ColumnDataProps>;
-}
 
 const PAGE_SIZE_OPTIONS = [
   {
@@ -70,65 +47,6 @@ export const TableComponents: React.FC = () => {
 
   console.log(rowSelection);
 
-  const columnHelper = createColumnHelper<ColumnDataProps>();
-  const columns = [
-    {
-      id: 'select',
-      header: ({ table }: TableProps) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }: RowProps) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      size: 50,
-    },
-    columnHelper.accessor('task', {
-      header: ({ column }) => {
-        return (
-          <div
-            className="flex cursor-pointer items-center justify-center"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Task
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </div>
-        );
-      },
-
-      cell: (props) => <p>{props.getValue()}</p>,
-      size: 250,
-    }),
-    columnHelper.accessor('status', {
-      header: 'Status',
-      cell: (props) => <p>{props.getValue().name}</p>,
-      size: 100,
-      enableSorting: false,
-    }),
-    columnHelper.accessor('due', {
-      header: 'Due',
-      cell: (props) => <p>{props.getValue()?.toLocaleTimeString()}</p>,
-      size: 100,
-      enableSorting: false,
-    }),
-    columnHelper.accessor('notes', {
-      header: 'Notes',
-      size: 300,
-      cell: (props) => <p>{props.getValue()}</p>,
-      enableSorting: false,
-    }),
-  ];
-
   const table = useReactTable({
     data,
     columns,
@@ -153,24 +71,12 @@ export const TableComponents: React.FC = () => {
     },
   });
 
-  /**
-   * @description: https://youtu.be/CjqG277Hmgg?si=7u3PV5j-giv2cuB8&t=2044
-   */
-  // const taskName =
-  //   columnFilters.find((column) => column.id === 'task')?.value ?? '';
-
-  // const onFilterChange = ({ id, value }: Filter) => {
-  //   setColumnFilters((prev) =>
-  //     prev.filter((column) => column.id !== id).concat({ id, value }),
-  //   );
-  // };
-
   return (
     <>
       {/* TableControls */}
       <div className="mb-2 flex items-center justify-between gap-2">
         <Input
-          className="w-[20%]"
+          className="w-1/5"
           type="text"
           placeholder="Task name"
           value={(table.getColumn('task')?.getFilterValue() as string) ?? ''}
@@ -179,7 +85,7 @@ export const TableComponents: React.FC = () => {
           }
         />
         <select
-          className="my-2 rounded-[4px] border-[1px] py-1 pl-2 pr-9 text-sm"
+          className="my-2 rounded-[4px] border-DEFAULT py-1 pl-2 pr-9 text-sm"
           value={table.getState().pagination.pageSize}
           onChange={(e) => {
             table.setPageSize(Number(e.target.value));
