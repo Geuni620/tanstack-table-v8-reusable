@@ -45,8 +45,6 @@ export const TableComponents: React.FC = () => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  console.log(rowSelection);
-
   const table = useReactTable({
     data,
     columns,

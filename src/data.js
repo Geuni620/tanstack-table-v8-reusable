@@ -76,6 +76,7 @@ const generateRandomData = () => {
       status: faker.helpers.arrayElement(STATUSES),
       due: faker.datatype.boolean() ? faker.date.soon(90) : null,
       notes: existingNotes[i % existingNotes.length],
+      done: false,
     });
   }
   return data;

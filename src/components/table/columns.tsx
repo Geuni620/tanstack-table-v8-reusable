@@ -8,7 +8,7 @@ type Status = {
   name: string;
 };
 
-type ColumnDataProps = {
+export type ColumnDataProps = {
   task: string;
   status: Status;
   due?: Date | null;
