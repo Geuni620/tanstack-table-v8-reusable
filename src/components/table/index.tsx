@@ -11,7 +11,7 @@ import {
 import { useState } from 'react';
 
 import { columns } from '@/components/table/columns';
-import { Button } from '@/components/ui/button';
+import { Pagination } from '@/components/table/pagination';
 import { Input } from '@/components/ui/input';
 import {
   Table,
@@ -144,30 +144,7 @@ export const TableComponents: React.FC = () => {
         </TableBody>
       </Table>
 
-      <div className="mt-[10px] flex items-center justify-center gap-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {'‹'}
-        </Button>
-
-        <div className="text-sm font-bold text-slate-500">
-          Page {table.getState().pagination.pageIndex + 1} of{' '}
-          {table.getPageCount()}
-        </div>
-
-        <Button
-          variant="outline"
-          size="sm"
-          disabled={!table.getCanNextPage()}
-          onClick={() => table.nextPage()}
-        >
-          {'›'}
-        </Button>
-      </div>
+      <Pagination table={table} />
     </>
   );
 };
