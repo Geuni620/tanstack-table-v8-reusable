@@ -56,7 +56,7 @@ export const columns: ColumnDef<ColumnDataProps>[] = [
   },
   {
     accessorKey: 'status.name',
-    id: 'id',
+    id: 'name',
     header: 'Status',
     cell: ({ row }) => <p>{row.getValue('name')}</p>,
     enableSorting: false,

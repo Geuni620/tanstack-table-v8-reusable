@@ -12,7 +12,7 @@ import { useState } from 'react';
 
 import { columns } from '@/components/table/columns';
 import { Pagination } from '@/components/table/pagination';
-import { Input } from '@/components/ui/input';
+import { Selection } from '@/components/table/selection';
 import {
   Table,
   TableBody,
@@ -22,21 +22,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import DATA from '@/data';
-
-const PAGE_SIZE_OPTIONS = [
-  {
-    value: 20,
-    label: '20개씩 보기',
-  },
-  {
-    value: 50,
-    label: '50개씩 보기',
-  },
-  {
-    value: 100,
-    label: '100개씩 보기',
-  },
-];
 
 export const TableComponents: React.FC = () => {
   const [data] = useState(DATA);
@@ -70,34 +55,7 @@ export const TableComponents: React.FC = () => {
   });
 
   return (
-    <>
-      {/* TableControls */}
-      <div className="mb-2 flex items-center justify-between gap-2">
-        <Input
-          className="w-1/5"
-          type="text"
-          placeholder="Task name"
-          value={(table.getColumn('task')?.getFilterValue() as string) ?? ''}
-          onChange={(e) =>
-            table.getColumn('task')?.setFilterValue(e.target.value)
-          }
-        />
-        <select
-          className="my-2 rounded-[4px] border-DEFAULT py-1 pl-2 pr-9 text-sm"
-          value={table.getState().pagination.pageSize}
-          onChange={(e) => {
-            table.setPageSize(Number(e.target.value));
-          }}
-        >
-          {PAGE_SIZE_OPTIONS.map(({ value, label }) => (
-            <option key={label} value={value}>
-              {label}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Table */}
+    <Selection table={table}>
       <Table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -145,6 +103,6 @@ export const TableComponents: React.FC = () => {
       </Table>
 
       <Pagination table={table} />
-    </>
+    </Selection>
   );
 };
