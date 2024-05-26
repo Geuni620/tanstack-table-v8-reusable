@@ -1,4 +1,5 @@
 import { type ColumnDef } from '@tanstack/react-table';
+import { format } from 'date-fns';
 import { ArrowUpDown } from 'lucide-react';
 
 import { Checkbox } from '@/components/ui/checkbox';
@@ -54,15 +55,16 @@ export const columns: ColumnDef<ColumnDataProps>[] = [
     },
   },
   {
-    accessorKey: 'statusName',
+    accessorKey: 'status.name',
+    id: 'id',
     header: 'Status',
-    cell: ({ row }) => <p>{row.getValue('statusName')}</p>,
+    cell: ({ row }) => <p>{row.getValue('name')}</p>,
     enableSorting: false,
   },
   {
     accessorKey: 'due',
     header: 'Due',
-    cell: ({ row }) => <p>{row.getValue('due')}</p>,
+    cell: ({ row }) => <p>{format(row.getValue('due'), 'yyyy/MM/dd')}</p>,
     enableSorting: false,
   },
   {
