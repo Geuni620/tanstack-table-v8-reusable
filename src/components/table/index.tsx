@@ -8,9 +8,9 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
+import { type ColumnDef } from '@tanstack/react-table';
 import { useState } from 'react';
 
-import { columns } from '@/components/table/columns';
 import { Pagination } from '@/components/table/pagination';
 import { Selection } from '@/components/table/selection';
 import {
@@ -21,11 +21,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import DATA from '@/data';
 
-export const TableComponents: React.FC = () => {
-  const [data] = useState(DATA);
+type TableProps<TData, TValue> = {
+  data: TData[];
+  columns: ColumnDef<TData, TValue>[];
+};
 
+export const TableComponents = <TData, TValue>({
+  data,
+  columns,
+}: TableProps<TData, TValue>) => {
   const [rowSelection, setRowSelection] = useState({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
