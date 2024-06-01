@@ -37,7 +37,7 @@ export const TableComponents = <TData, TValue>({
 
   const table = useReactTable({
     data,
-    columns,
+    columns: columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
